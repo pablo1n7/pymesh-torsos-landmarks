@@ -4,10 +4,10 @@ import pandas as pd
 import math
 import glob
 
-fs_landmarks = sorted(glob.glob("../data_artificial_cites/landmarks_reales/*.pts"))
-fs_mesh = sorted(glob.glob("../data_artificial_cites/reales/*.ply"))
+fs_landmarks = sorted(glob.glob("../../Datos/data_artificial_cites/landmarks_reales/*.pts"))
+fs_mesh = sorted(glob.glob("../../Datos/data_artificial_cites/reales/*.ply"))
 
-for landmarks_f, mesh_f in zip(fs_landmarks[116:-1], fs_mesh[116:-1]):
+for landmarks_f, mesh_f in zip(fs_landmarks[94:], fs_mesh[94:]):
     landmarks = pd.read_csv(landmarks_f,header=None,index_col=[0],skiprows=range(2),delimiter=r"\s+")
     mesh = pymesh.load_mesh(mesh_f)
     ls0 = landmarks.iloc[0].tolist()
@@ -19,7 +19,7 @@ for landmarks_f, mesh_f in zip(fs_landmarks[116:-1], fs_mesh[116:-1]):
     foot_right = landmarks.iloc[6].tolist()
     landmarks_torso = np.array([ls0,ls1,ls2,ls3])
     centroide = landmarks_torso.mean(0)
-    b = pymesh.meshutils.generate_icosphere(0.50,centroide)
+    b = pymesh.meshutils.generate_icosphere(0.70,centroide)
     output_mesh = pymesh.boolean(b, mesh, operation="intersection",engine="auto")
     print(mesh_f.split("/")[-1])
     pymesh.save_mesh("out/torsos/"+mesh_f.split("/")[-1], output_mesh)
